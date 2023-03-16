@@ -2,12 +2,17 @@ import os
 import discord
 import requests #to get data from api it is for http
 import json
+import random
 
 my_secret = os.environ['TOKEN']
 
 intents = discord.Intents.all()
 client = discord.Client(command_prefix='/', intents=intents)
 print(my_secret)
+
+sad_words = ["sad","depressed","unhappy","miserable","angry","depressing","regret","regretful","dejected","sorrowful","down","downhearted","despairing","heartbroken","heart broken","inconsolable","mournful"]
+
+starter_encouragements = ["Cheer up!", "Hang in there.", "You are a great person/bot!", "Tomorrow will be easier!"]
 
 def get_quote():
   response = requests.get("https://zenquotes.io/api/random")
