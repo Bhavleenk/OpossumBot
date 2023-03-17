@@ -36,11 +36,11 @@ def update_encouragements(encouraging_messages):
   else:
     db["encouragements"] = [encouraging_messages]
 
-  def delete_encouragements(index):
-    encouragements = db["encouragements"]
-    if len(encouragements)>index :
+def delete_encouragements(index):
+  encouragements = db["encouragements"]
+  if len(encouragements)>index :
       del encouragemnets[index]
-    db["encouragements"]=encouragements
+      db["encouragements"]=encouragements
   
 @client.event
 async def on_ready():
@@ -56,8 +56,33 @@ async def on_message(message):
     quote = get_quote()
     await message.channel.send(quote)
 
+  options = starter_encouragements
+  if "encouragements" in db.keys():
+    options = options +db["encouragements"]
+
+  options = starter_encouragements
+  if "encouragements" in db.keys():
+    options = options+db["encouragemnets"]
+
   if any(word in msg for word in sad_words):
-    await message.channel.send(random.choices(starter_encouragements))
+    await message.channel.send(random.choices(options))
+
+  if msg == "new":
+    encouraging_message = msg.split("new ",1)[1]
+    update_encouragements(encouraging_message)
+  await message.channel.send("New encouraging message added")
+
+  if msg=='del':
+    encouragements = []
+    if "encouragements" in db.keys:
+      index = int(msg.split("del",1)[1])
+      delete_encouragements(index)
+      encouragements=db["encouragements"]
+    await message.channel.send(encouragements)  
+      
+    
+
+  
 
 
 client.run(my_secret)
